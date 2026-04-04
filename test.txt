@@ -1,1 +1,1 @@
-teste para acionar gatilho de pull request para a branch main - novo teste
+teste para acionar gatilho de pull request para a branch main - teste com pr com types
