@@ -25,9 +25,9 @@ Git / Versionamento de Código
 📈 Trilha de Aprendizado (Meu Progresso)
 [x] Criar o repositório de estudos.
 
-[ ] Entender a sintaxe YAML e a estrutura básica de um workflow.
+[ x] Entender a sintaxe YAML e a estrutura básica de um workflow.
 
-[ ] Criar o primeiro workflow (Hello World).
+[ x] Criar o primeiro workflow (Hello World).
 
 [ ] Explorar diferentes gatilhos (push, pull_request, schedule).
 
