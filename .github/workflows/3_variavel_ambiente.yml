@@ -7,7 +7,7 @@ env:
   var_2: ${{vars.var_test}}
 jobs:
   on-push:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     environment: development
     steps:
       - name: Comentário
