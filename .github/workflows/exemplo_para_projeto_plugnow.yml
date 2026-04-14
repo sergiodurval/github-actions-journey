@@ -1,6 +1,10 @@
 name: PlugNow-Pipeline
+
 on: workflow_dispatch
-  
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
 
@@ -18,10 +22,10 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore ./PlugonApi.sln
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build ./PlugonApi.sln --configuration Release --no-restore
 
   docker:
     name: Build & Push Docker Image
@@ -32,12 +36,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login no ECR
         id: login-ecr
@@ -62,12 +65,11 @@ jobs:
     needs: docker
 
     steps:
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Forçar novo deploy no App Runner
         run: |
