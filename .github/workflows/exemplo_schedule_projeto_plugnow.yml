@@ -1,0 +1,33 @@
+name: PlugNow-Shutdown-Infra 
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 21h Brasil
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  shutdown:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      
+      - name: Pausar App Runner
+        run: |
+          aws apprunner pause-service \
+            --service-arn ${{ secrets.APP_RUNNER_SERVICE_ARN }}
+
+      
+      - name: Parar RDS
+        run: |
+          aws rds stop-db-instance \
+            --db-instance-identifier ${{ secrets.DB_INSTANCE_ID }}
