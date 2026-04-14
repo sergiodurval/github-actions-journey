@@ -29,9 +29,9 @@ Git / Versionamento de Código
 
 [ x] Criar o primeiro workflow (Hello World).
 
-[ ] Explorar diferentes gatilhos (push, pull_request, schedule).
+[x ] Explorar diferentes gatilhos (push, pull_request, schedule).
 
-[ ] Trabalhar com variáveis de ambiente e GitHub Secrets de forma segura.
+[x ] Trabalhar com variáveis de ambiente e GitHub Secrets de forma segura.
 
 [ ] Configurar um pipeline básico de testes automatizados.
 
