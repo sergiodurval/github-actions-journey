@@ -1,0 +1,51 @@
+name: .NET CI (Build + Test)
+on: workflow_dispatch
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup do .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restaurar dependências
+        run: dotnet restore
+
+      - name: Build da aplicação
+        run: dotnet build --configuration Release --no-restore
+
+      
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: build  
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup do .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restaurar dependências
+        run: dotnet restore
+
+      # (opcional) baixar artefato do build
+      - name: Baixar artefatos
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - name: Executar testes unitários
+        run: dotnet test --configuration Release --no-build --verbosity normal
