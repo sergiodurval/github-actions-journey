@@ -15,8 +15,6 @@ jobs:
         run: |
           echo Comentário após o erro
 
-  
-
   job_2_always:
     runs-on: ubuntu-latest
     steps:
@@ -26,5 +24,18 @@ jobs:
           exit 1
       - name: Comentário
         if: always()
+        run: |
+          echo Comentário após o erro
+
+  job_3_continue_on_error:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comentário
+        run: |
+          echo Comentário antes do erro
+          exit 1
+        continue-on-error: true
+
+      - name: Comentário
         run: |
           echo Comentário após o erro
