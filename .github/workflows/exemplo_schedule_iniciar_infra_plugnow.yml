@@ -1,0 +1,33 @@
+name: PlugNow-Start-Infra 
+
+on:
+  schedule:
+    - cron: '0 11 * * *'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  startup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      
+      - name: Iniciar banco RDS
+        run: |
+          aws rds start-db-instance \
+            --db-instance-identifier ${{ secrets.DB_INSTANCE_ID }}
+
+      
+      - name: Iniciar App Runner
+        run: |
+          aws apprunner resume-service \
+            --service-arn ${{ secrets.APP_RUNNER_SERVICE_ARN }}
